@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react'
+import { Searcher } from './components/Searcher'
+import { CardList } from './components/CardList'
+
+import { api } from './api/base'
+import { Col } from 'antd'
+import './App.css'
 
 function App() {
+  const [characters, setCharacters] = useState<Array<any>>([])
+
+  useEffect(() => {
+    console.log('apí is ' + process.env.REACT_APP_MOOGLEAPI)
+
+    const getCharacters = async () => {
+      await api
+        .get('characters')
+        .then((response) => setCharacters(response.data))
+        .catch((error) => {
+          throw error
+        })
+    }
+
+    getCharacters()
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <Col span={8} offset={8}>
+        <Searcher />
+      </Col>
+      <CardList characters={characters} />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

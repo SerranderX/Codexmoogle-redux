@@ -1,0 +1,18 @@
+// templates/service.ts.hbs
+import axios from 'axios';
+
+export const {{camelCase name}} = async (accessToken: string, idToken: string) => {
+return await axios
+.post(`${import.meta.env.VITE_APP_API_URL}/{{camelCase name}}`, null, {
+headers: {
+Authorization: `Bearer ${idToken}`,
+'Authentication-Info': `${accessToken}`,
+},
+})
+.then((response) => {
+return response.data;
+})
+.catch((error) => {
+throw error;
+});
+};

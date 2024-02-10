@@ -1,22 +1,25 @@
-import React, { memo } from 'react'
+import { memo } from 'react'
 import { Card } from './Card'
 import './CardList.css'
+import { Character } from '../shared/types/character.type'
+import { shallowEqual, useSelector } from 'react-redux'
 
-interface CardListProps {
-  characters: Array<any>
-}
+const CardList = memo(() => {
+  const characters = useSelector((state: any) => state.getIn(['characters', 'characters'], shallowEqual)).toJS()
 
-const CardList = memo(({ characters }: CardListProps) => {
   return (
     <div className='CardList'>
-      {characters.map((character: any, i: number) => (
-        <Card
-          imageUrl={character?.pictures[0]?.url}
-          title={character.name}
-          description={character.description}
-          key={`${i}-character`}
-        ></Card>
-      ))}
+      {characters &&
+        characters.map((character: Character, i: number) => (
+          <Card
+            imageUrl={character.pictures[0]?.url}
+            description={character.description}
+            favorite={character.favorite}
+            name={character.name}
+            itemId={character.id}
+            key={`${i}-character`}
+          />
+        ))}
     </div>
   )
 })

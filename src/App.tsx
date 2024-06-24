@@ -1,20 +1,21 @@
-import React, { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { Searcher } from './components/Searcher'
 import { CardList } from './components/CardList'
-import { getCharactersAction } from './actions'
 import { Col, Spin } from 'antd'
 import './App.css'
-import { useDispatch, useSelector } from 'react-redux'
+import { fetchCharacters } from './slices/characters.slice'
+import { useAppDispatch, useAppSelector } from './reduxConfig/config'
 
 function App() {
-  const loading = useSelector((state: any) => state.getIn(['ui', 'loading']))
-  const dispatch = useDispatch()
+  const loading = useAppSelector((state) => state.ui.loading)
+  const initRender = useRef(true)
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    const loadCharacters = async () => {
-      dispatch<any>(getCharactersAction())
+    if (initRender.current) {
+      initRender.current = false
+      dispatch(fetchCharacters())
     }
-    if (loading) loadCharacters()
   }, [])
 
   return (

@@ -1,8 +1,8 @@
 import { memo } from 'react'
 import { Card as AntdCard, Button } from 'antd'
 import { StarFilled, StarOutlined } from '@ant-design/icons'
-import { useDispatch } from 'react-redux'
-import { setFavoriteAction } from '../actions'
+import { useAppDispatch } from '../reduxConfig/config'
+import { setFavorite } from '../slices/characters.slice'
 
 type FavoriteButtonProps = { favorite: boolean | undefined; handlerClick: () => void }
 
@@ -20,11 +20,11 @@ type CardProps = {
 }
 
 const Card = memo(({ imageUrl, name, description, favorite, itemId }: CardProps) => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const n = 150
 
   const handleStarClick = () => {
-    dispatch<any>(setFavoriteAction(itemId))
+    dispatch(setFavorite(itemId))
   }
 
   return (
